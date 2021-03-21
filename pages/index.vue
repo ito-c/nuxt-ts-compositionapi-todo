@@ -4,7 +4,7 @@
       <logo />
       <h1 class="title">nuxt_typescript_app</h1>
       <h2 class="subtitle">My epic Nuxt.js project</h2>
-      <user-name :user="userName" />
+      <user-name :user="userName" :prop-awesome-name="awesomeName" />
       <div class="links">
         <a href="https://nuxtjs.org/" target="_blank" class="button--green">
           Documentation
@@ -39,8 +39,9 @@ export default defineComponent({
 
   setup() {
     // data
-    const familyName = ref<string>('family string')
-    const givenName = ref<number>(111)
+    const awesomeName = ref<string>('hogemori')
+    const familyName = 'yoshida'
+    const givenName = 111
 
     const state = reactive<{ count: number }>({
       count: 0,
@@ -50,7 +51,7 @@ export default defineComponent({
       state.count += count
 
       if (state.count >= 0) {
-        alert('プラスだよ')
+        console.log('プラスだよ')
       }
     }
 
@@ -58,7 +59,7 @@ export default defineComponent({
       state.count -= count
 
       if (state.count < 0) {
-        alert('マイナスだよ')
+        console.log('マイナスだよ')
       }
     }
 
@@ -68,6 +69,7 @@ export default defineComponent({
         familyName,
         givenName,
       },
+      awesomeName,
       state,
       increment,
       decrement,
