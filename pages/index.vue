@@ -1,21 +1,17 @@
 <template>
   <div class="container">
     <div>
-      <Logo />
-      <h1 class="title">todo-app</h1>
+      <logo />
+      <h1 class="title">nuxt_typescript_app</h1>
+      <h2 class="subtitle">My epic Nuxt.js project</h2>
+      <user-name :user="userName" />
       <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
+        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
           Documentation
         </a>
         <a
           href="https://github.com/nuxt/nuxt.js"
           target="_blank"
-          rel="noopener noreferrer"
           class="button--grey"
         >
           GitHub
@@ -26,9 +22,26 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Logo from '~/components/Logo.vue'
+import UserName from '~/components/UserName.vue'
 
-export default Vue.extend({})
+export default {
+  components: {
+    Logo,
+    UserName,
+  },
+
+  data() {
+    return {
+      userName: {
+        familyName: 1,
+        givenName: '1234',
+      },
+    }
+  },
+
+  methods: {},
+}
 </script>
 
 <style>
