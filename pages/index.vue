@@ -17,31 +17,63 @@
           GitHub
         </a>
       </div>
+      <button @click="increment(1)">増やすよ</button>
+      <button @click="decrement(1)">減らすよ</button>
+      <div>
+        {{ state.count }}
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { defineComponent, reactive, ref } from '@nuxtjs/composition-api'
 import Logo from '~/components/Logo.vue'
 import UserName from '~/components/UserName.vue'
 
-export default {
+export default defineComponent({
   components: {
     Logo,
     UserName,
   },
 
-  data() {
+  setup() {
+    // data
+    const familyName = ref<string>('family string')
+    const givenName = ref<number>(111)
+
+    const state = reactive<{ count: number }>({
+      count: 0,
+    })
+
+    const increment = (count: number): void => {
+      state.count += count
+
+      if (state.count >= 0) {
+        alert('プラスだよ')
+      }
+    }
+
+    const decrement = (count: number): void => {
+      state.count -= count
+
+      if (state.count < 0) {
+        alert('マイナスだよ')
+      }
+    }
+
     return {
+      // templeteで使う
       userName: {
-        familyName: 1,
-        givenName: '1234',
+        familyName,
+        givenName,
       },
+      state,
+      increment,
+      decrement,
     }
   },
-
-  methods: {},
-}
+})
 </script>
 
 <style>

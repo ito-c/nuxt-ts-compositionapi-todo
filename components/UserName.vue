@@ -8,9 +8,6 @@
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
 
-const s: string = 'a'
-console.log(s)
-
 interface User {
   familyName: number
   givenName: string
