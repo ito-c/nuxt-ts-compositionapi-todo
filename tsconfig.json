@@ -29,6 +29,8 @@
       "@types/node"
     ]
   },
+  "files": [ "./vue-shim.d.ts" ],
+  "include": [ "./**/**/*.ts", "./**/**/*.vue" ],
   "exclude": [
     "node_modules",
     ".nuxt",
