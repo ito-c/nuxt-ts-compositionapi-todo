@@ -1,5 +1,8 @@
 <template>
-  <nuxt-link to="todo">todo</nuxt-link>
+  <div>
+    <p>TOPページ</p>
+    <nuxt-link to="todo">todo</nuxt-link>
+  </div>
 </template>
 
 <script lang="ts">
