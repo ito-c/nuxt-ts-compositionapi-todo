@@ -5,7 +5,12 @@
       <h1 class="title">todo</h1>
       <h2 class="subtitle">My epic Nuxt.js project</h2>
 
-      <nuxt-link to="/">TOPへ</nuxt-link>
+      <div>
+        <nuxt-link to="/todo">TOPへ</nuxt-link>
+      </div>
+      <div>
+        <nuxt-link to="/todo/name">nameへ</nuxt-link>
+      </div>
 
       <nuxt-child />
     </div>
