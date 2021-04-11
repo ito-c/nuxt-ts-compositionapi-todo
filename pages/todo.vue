@@ -6,7 +6,7 @@
       <h2 class="subtitle">My epic Nuxt.js project</h2>
 
       <div>
-        <nuxt-link to="/">TOPへ</nuxt-link>
+        <nuxt-link to="/todo">todoのTOPへ</nuxt-link>
       </div>
       <div>
         <nuxt-link to="/todo/play-ground">playgroundへ</nuxt-link>
