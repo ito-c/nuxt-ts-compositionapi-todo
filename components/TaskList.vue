@@ -31,8 +31,9 @@
 import {
   computed,
   defineComponent,
-  reactive,
+  isRef,
   ref,
+  watch,
 } from '@nuxtjs/composition-api'
 
 interface Task {
@@ -74,42 +75,104 @@ const useAddingTask = (tasksRef) => {
   }
 }
 
+const useFilter = (tasks = []) => {
+  const tasksRef = isRef(tasks) ? tasks : ref(tasks)
+  // 配列か
+  const valid = Array.isArray(tasksRef.value)
+
+  const doingTasks = valid
+    ? computed(() => tasksRef.value.filter((t) => !t.status))
+    : () => {
+        return []
+      }
+  const completedTasks = valid
+    ? computed(() => tasksRef.value.filter((t) => t.status))
+    : () => {
+        return []
+      }
+
+  return {
+    doingTasks,
+    completedTasks,
+  }
+}
+
+const useSearcher = (tasks = []) => {
+  const searchTextRef = ref('')
+  const tasksRef = ref(tasks)
+  const valid = Array.isArray(tasksRef.value)
+
+  const search = valid
+    ? computed(() =>
+        tasksRef.value.filter((t) => t.name.includes(searchTextRef.value))
+      )
+    : () => {
+        return []
+      }
+
+  return {
+    searchTextRef,
+    search,
+  }
+}
+
 export default defineComponent({
   setup() {
-    const state = reactive({
-      taskName: '',
-      searchText: '',
-      tasks: [],
-      doingTasks: computed(() =>
-        state.searchedTasks.filter((t: Task) => !t.status)
-      ),
-      completedTasks: computed(() =>
-        state.searchedTasks.filter((t: Task) => t.status)
-      ),
-      searchedTasks: computed(() =>
-        state.tasks.filter((t: Task) => t.name.includes(state.searchtext))
-      ),
+    const { tasksRef, toggleTask } = useTaskList()
+    const { taskNameRef, addTask } = useAddingTask(tasksRef)
+    const { searchTextRef, search } = useSearcher(tasksRef.value)
+    const { doingTasks, completedTasks } = useFilter(search)
+
+    watch([doingTasks, completedTasks], () => {
+      console.log('doingTasks: ', doingTasks.value)
+      console.log('completedTasks: ', completedTasks.value)
     })
 
-    const addTask = () => {
-      state.tasks.push({
-        name: state.taskName,
-        status: false,
-      })
-      state.taskName = ''
-    }
-
-    const toggleTask = (task, status) => {
-      const index = state.tasks.indexOf(task)
-      state.tasks.splice(index, 1, { ...task, status })
-    }
-
     return {
-      state,
+      // Mutable state
+      tasksRef, // タスク一覧
+      taskNameRef, // 追加するタスク名
+      searchTextRef, // 検索するタスク名
+      // Functions
       addTask,
       toggleTask,
+      // Computed
+      doingTasks,
+      completedTasks,
     }
   },
+  // setup() {
+  //   const state = reactive({
+  //     taskName: '',
+  //     searchText: '',
+  //     tasks: [],
+  //     doingTasks: computed(() =>
+  //       state.searchedTasks.filter((t: Task) => !t.status)
+  //     ),
+  //     completedTasks: computed(() =>
+  //       state.searchedTasks.filter((t: Task) => t.status)
+  //     ),
+  //     searchedTasks: computed(() =>
+  //       state.tasks.filter((t: Task) => t.name.includes(state.searchtext))
+  //     ),
+  //   })
+  //   const addTask = () => {
+  //     state.tasks.push({
+  //       name: state.taskName,
+  //       status: false,
+  //     })
+  //     state.taskName = ''
+  //   }
+  //   const toggleTask = (task, status) => {
+  //     const index = state.tasks.indexOf(task)
+  //     state.tasks.splice(index, 1, { ...task, status })
+  //   }
+  //   return {
+  //     state,
+  //     addTask,
+  //     toggleTask,
+  //   }
+  // },
 })
 </script>
 
