@@ -4,7 +4,10 @@
       <logo />
       <h1 class="title">nuxt_typescript_app</h1>
       <h2 class="subtitle">My epic Nuxt.js project</h2>
-      <user-name :user="userName" :prop-awesome-name="awesomeName" />
+
+      <user-name :user="userName" :prop-awesome-name="awesomeNameRef" />
+      <nuxt-link to="todo">TODOへ</nuxt-link>
+
       <div class="links">
         <a href="https://nuxtjs.org/" target="_blank" class="button--green">
           Documentation
@@ -37,15 +40,14 @@ export default defineComponent({
     UserName,
   },
 
-  setup() {
+  setup(_) {
     // data
-    const awesomeName = ref<string>('hogemori')
-    const familyName = 'yoshida'
-    const givenName = 111
-
-    const state = reactive<{ count: number }>({
+    const state = reactive({
+      familyName: 'yoshida',
+      givenName: 'itoka',
       count: 0,
     })
+    const awesomeNameRef = ref('hogemori')
 
     const increment = (count: number): void => {
       state.count += count
@@ -66,10 +68,10 @@ export default defineComponent({
     return {
       // templeteで使う
       userName: {
-        familyName,
-        givenName,
+        familyName: state.familyName,
+        givenName: state.givenName,
       },
-      awesomeName,
+      awesomeNameRef,
       state,
       increment,
       decrement,
@@ -84,34 +86,4 @@ export default defineComponent({
 @apply min-h-screen flex justify-center items-center text-center mx-auto;
 }
 */
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
 </style>

@@ -45,12 +45,10 @@ export default defineComponent({
           : 'This is a message. ')
 
     const fullName = computed((): string => {
-      console.log(props.user)
       return `${props.user.familyName} ${props.user.givenName}`
     })
 
     const awesomeName = computed((): string => {
-      console.log(props.propAwesomeName)
       return `hogehoge ${props.propAwesomeName}`
     })
 
