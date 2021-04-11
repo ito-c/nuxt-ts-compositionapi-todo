@@ -28,93 +28,18 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  isRef,
-  ref,
-  watch,
-} from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
+import { useFilter } from './composables/use-filter'
+import { useTaskList } from './composables/use-task-list'
+import { useAddingTask } from './composables/use-adding-task'
+import { useSearcher } from './composables/use-searcher'
 
-interface Task {
-  tasks: {
-    taskName: string
-    status: boolean
-  }
-}
-
-const useTaskList = () => {
-  // タスクの一覧？
-  const tasksRef = ref([])
-
-  const toggleTask = (task, status) => {
-    const index = tasksRef.value.indexOf(task)
-    tasksRef.tasks.splice(index, 1, { ...task, status })
-  }
-
-  return {
-    tasksRef,
-    toggleTask,
-  }
-}
-
-const useAddingTask = (tasksRef) => {
-  const taskNameRef = ref('')
-
-  const addTask = () => {
-    tasksRef.value.push({
-      name: taskNameRef.value,
-      status: false,
-    })
-    taskNameRef.value = ''
-  }
-
-  return {
-    taskNameRef,
-    addTask,
-  }
-}
-
-const useFilter = (tasks = []) => {
-  const tasksRef = isRef(tasks) ? tasks : ref(tasks)
-  // 配列か
-  const valid = Array.isArray(tasksRef.value)
-
-  const doingTasks = valid
-    ? computed(() => tasksRef.value.filter((t) => !t.status))
-    : () => {
-        return []
-      }
-  const completedTasks = valid
-    ? computed(() => tasksRef.value.filter((t) => t.status))
-    : () => {
-        return []
-      }
-
-  return {
-    doingTasks,
-    completedTasks,
-  }
-}
-
-const useSearcher = (tasks = []) => {
-  const searchTextRef = ref('')
-  const tasksRef = ref(tasks)
-  const valid = Array.isArray(tasksRef.value)
-
-  const search = valid
-    ? computed(() =>
-        tasksRef.value.filter((t) => t.name.includes(searchTextRef.value))
-      )
-    : () => {
-        return []
-      }
-
-  return {
-    searchTextRef,
-    search,
-  }
-}
+// interface Task {
+//   tasks: {
+//     taskName: string
+//     status: boolean
+//   }
+// }
 
 export default defineComponent({
   setup() {
@@ -122,11 +47,6 @@ export default defineComponent({
     const { taskNameRef, addTask } = useAddingTask(tasksRef)
     const { searchTextRef, search } = useSearcher(tasksRef.value)
     const { doingTasks, completedTasks } = useFilter(search)
-
-    watch([doingTasks, completedTasks], () => {
-      console.log('doingTasks: ', doingTasks.value)
-      console.log('completedTasks: ', completedTasks.value)
-    })
 
     return {
       // Mutable state
