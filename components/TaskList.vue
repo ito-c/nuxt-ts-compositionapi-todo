@@ -1,57 +1,44 @@
 <template>
   <div class="task-list-wrapper">
     <div>
-      <input v-model="state.taskName" type="text" />
-      <button @click="addTask">タスク追加</button>
+      <AddTask :add-task="addTask" />
     </div>
-    <div><input v-model="state.searchText" type="text" />Search</div>
+    <div><input v-model="searchTextRef" type="text" />Search</div>
     <div class="task-list">
-      <ul>
-        <h3>Doing</h3>
-        <li v-for="(task, index) in state.doingTasks" :key="index">
-          <input type="checkbox" :checked="task.status" disabled />
-          <label>{{ task.name }}</label>
-          <button @click="toggleTask(task, true)">toggle</button>
-        </li>
-      </ul>
-      <ul>
-        <h3>Completed</h3>
-        <li v-for="(task, index) in state.completedTasks" :key="index">
-          <input type="checkbox" :checked="tasl.status" disabled />
-          <label>{{ task.name }}</label>
-          <button @click="toggleTask(task, false)">toggle</button>
-        </li>
-      </ul>
+      <TaskRow title="DOING" :tasks="doingTasks" :toggle-task="toggleTask" />
+      <TaskRow
+        title="COMPLETED"
+        :tasks="completedTasks"
+        :toggle-task="toggleTask"
+      />
     </div>
-    <pre>{{ state.tasks }}</pre>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import { useFilter } from './composables/use-filter'
+import TaskRow from './TaskRow.vue'
+import AddTask from './AddTask.vue'
+import useFilter from './composables/use-filter'
 import { useTaskList } from './composables/use-task-list'
 import { useAddingTask } from './composables/use-adding-task'
-import { useSearcher } from './composables/use-searcher'
-
-// interface Task {
-//   tasks: {
-//     taskName: string
-//     status: boolean
-//   }
-// }
+import useSearcher from './composables/use-searcher'
 
 export default defineComponent({
+  components: {
+    TaskRow,
+    AddTask,
+  },
+
   setup() {
     const { tasksRef, toggleTask } = useTaskList()
-    const { taskNameRef, addTask } = useAddingTask(tasksRef)
-    const { searchTextRef, search } = useSearcher(tasksRef.value)
+    const { addTask } = useAddingTask(tasksRef)
+    const { searchTextRef, search } = useSearcher(tasksRef)
     const { doingTasks, completedTasks } = useFilter(search)
 
     return {
       // Mutable state
       tasksRef, // タスク一覧
-      taskNameRef, // 追加するタスク名
       searchTextRef, // 検索するタスク名
       // Functions
       addTask,
