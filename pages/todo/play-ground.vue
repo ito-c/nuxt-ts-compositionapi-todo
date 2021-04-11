@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <div>
       <user-name :user="userName" :prop-awesome-name="awesomeNameRef" />
 
