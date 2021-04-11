@@ -16,23 +16,44 @@
       </ul>
       <ul>
         <h3>Completed</h3>
-        <li v-for="(task, index) in completedTasks" :key="index">
+        <li v-for="(task, index) in state.completedTasks" :key="index">
           <input type="checkbox" :checked="tasl.status" disabled />
           <label>{{ task.name }}</label>
           <button @click="toggleTask(task, false)">toggle</button>
         </li>
       </ul>
     </div>
+    <pre>{{ state.tasks }}</pre>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive } from '@nuxtjs/composition-api'
+import {
+  computed,
+  defineComponent,
+  reactive,
+  ref,
+} from '@nuxtjs/composition-api'
 
 interface Task {
   tasks: {
     taskName: string
     status: boolean
+  }
+}
+
+const useTaskList = () => {
+  // タスクの一覧？
+  const tasksRef = ref([])
+
+  const toggleTask = (task, status) => {
+    const index = tasksRef.value.indexOf(task)
+    tasksRef.tasks.splice(index, 1, { ...task, status })
+  }
+
+  return {
+    tasksRef,
+    toggleTask,
   }
 }
 
