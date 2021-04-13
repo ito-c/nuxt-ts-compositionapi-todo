@@ -1,4 +1,6 @@
 import { NuxtConfig } from '@nuxt/types'
+const Sass = require('sass')
+const Fiber = require('fibers')
 
 const config: NuxtConfig = {
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -46,7 +48,16 @@ const config: NuxtConfig = {
   axios: {},
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    loaders: {
+      scss: {
+        implementation: Sass,
+        sassOptions: {
+          fiber: Fiber,
+        },
+      },
+    },
+  },
 }
 
 export default config
