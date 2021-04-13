@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>test</div>
+    <div class="test">test</div>
     <Form />
   </div>
 </template>
@@ -23,4 +23,8 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.test {
+  font-size: 100px;
+}
+</style>
