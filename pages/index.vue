@@ -2,6 +2,7 @@
   <div>
     <p>TOPページ</p>
     <nuxt-link to="todo">todo</nuxt-link>
+    <nuxt-link to="form">form</nuxt-link>
   </div>
 </template>
 
