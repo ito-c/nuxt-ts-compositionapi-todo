@@ -1,10 +1,7 @@
 <template>
   <div class="FormPlayGroundPage">
     <h1 class="title">FormPlayGroundPage</h1>
-    <FormPlaySync
-      :form-data="state.formData"
-      @updateFormData="updateFormData"
-    />
+    <FormPlaySync :form-data.sync="state.formData" />
   </div>
 </template>
 
@@ -22,13 +19,8 @@ export default defineComponent({
       formData: '',
     })
 
-    const updateFormData = (input: string) => {
-      state.formData = input
-    }
-
     return {
       state,
-      updateFormData,
     }
   },
 })

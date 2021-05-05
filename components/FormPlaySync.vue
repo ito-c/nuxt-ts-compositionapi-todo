@@ -19,7 +19,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const updateFormData = (input: string) => {
-      emit('updateFormData', input)
+      emit('update:formData', input)
     }
 
     return {
