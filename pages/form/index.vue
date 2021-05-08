@@ -1,6 +1,8 @@
 <template>
   <div>
     <h1 class="title">pages/form/index.vue</h1>
+    <nuxt-link to="/form/play-ground">playgroundはここから</nuxt-link>
+    <hr />
     <Form
       :hoge-number="state.hogeNumber"
       :fuga-form-data="state.fugaFormData"
