@@ -3,6 +3,7 @@
     <p>TOPページ</p>
     <nuxt-link to="todo">todo</nuxt-link>
     <nuxt-link to="form">form</nuxt-link>
+    <nuxt-link to="payment/payment">payment</nuxt-link>
   </div>
 </template>
 
