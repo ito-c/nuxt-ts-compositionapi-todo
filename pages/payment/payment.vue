@@ -26,11 +26,15 @@ export default defineComponent({
       console.log('onTokenCreated')
       const token = document.getElementsByName('payjp-token')[0].value
       console.log(token)
+      console.log('ここでAPIを叩く処理')
     }
 
     const onTokenFailed = (res) => {
       console.log('onTokenFailed')
       console.log(res)
+      console.log(
+        'エラーが発生しました。入力内容をご確認のうえ、再度お試しください。'
+      )
     }
 
     const appendPayJpScriptTag = () => {
@@ -59,10 +63,11 @@ export default defineComponent({
 
     onMounted(() => {
       nextTick(() => {
+        // マウント後、checkoutのscript要素を追加する
         appendPayJpScriptTag()
       })
 
-      // appendPayJpScriptTagでscriptタグをappendとpayjpのscript実行後に処理したい
+      // トークン成功時・失敗時のメソッドを登録する
       window.onTokenCreated = onTokenCreated
       window.onTokenFailed = onTokenFailed
     })
