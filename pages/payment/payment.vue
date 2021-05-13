@@ -4,6 +4,7 @@
     <h2>テストカード</h2>
     <p>4242424242424242</p>
     <div ref="payjpAreaRef"></div>
+    <nuxt-link to="/">form</nuxt-link>
   </div>
 </template>
 
@@ -11,15 +12,15 @@
 import {
   defineComponent,
   nextTick,
+  onBeforeUnmount,
   onMounted,
   ref,
-  useContext,
-  useRouter,
 } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
     const payjpAreaRef = ref()
+    let scriptEl
 
     const onTokenCreated = () => {
       console.log('onTokenCreated')
@@ -47,7 +48,8 @@ export default defineComponent({
         'data-name-placeholder': 'YAMADA TARO',
       }
 
-      const scriptEl = document.createElement('script')
+      scriptEl = document.createElement('script')
+
       Object.keys(attrs).forEach((key) => {
         scriptEl.setAttribute(key, attrs[key])
       })
@@ -63,6 +65,22 @@ export default defineComponent({
       // appendPayJpScriptTagでscriptタグをappendとpayjpのscript実行後に処理したい
       window.onTokenCreated = onTokenCreated
       window.onTokenFailed = onTokenFailed
+    })
+
+    // CSR時に都度payjpのDOMを取り除くことで、複数のDOMが存在してしまう事象を防ぐ
+    onBeforeUnmount(() => {
+      // checkoutのiframe要素を取得
+      const payjpCheckoutIframeEl = document.getElementById(
+        'payjp-checkout-iframe'
+      )
+
+      // 親のdiv要素ごとcheckoutのiframe要素を取り除く
+      payjpCheckoutIframeEl.parentElement.remove()
+      // appendPayJpScriptTag()で追加したscript要素を取り除く
+      payjpAreaRef.value.removeChild(scriptEl)
+      window.PayjpCheckout = null
+      window.onTokenCreated = null
+      window.onTokenFailed = null
     })
 
     return {
